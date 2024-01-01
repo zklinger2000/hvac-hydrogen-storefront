@@ -6,6 +6,7 @@ import {
   useLoaderData,
   type MetaFunction,
   type FetcherWithComponents,
+  NavLink,
 } from '@remix-run/react';
 import type {
   ProductFragment,
@@ -26,6 +27,8 @@ import type {
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
+import {FiFolder, FiHome} from 'react-icons/fi';
+import clsx from 'clsx';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -117,13 +120,30 @@ export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
-      />
+    <div className="content-grid">
+      {/* Breadcrumbs */}
+      <div className="text-sm breadcrumbs">
+        <ul>
+          <li>
+            <NavLink to="/">
+              <FiHome className="mr-2" />
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <FiFolder className="mr-2" />
+            Products
+          </li>
+        </ul>
+      </div>
+      <div className="product">
+        <ProductImage image={selectedVariant?.image} />
+        <ProductMain
+          selectedVariant={selectedVariant}
+          product={product}
+          variants={variants}
+        />
+      </div>
     </div>
   );
 }
@@ -156,8 +176,8 @@ function ProductMain({
 }) {
   const {title, descriptionHtml} = product;
   return (
-    <div className="product-main">
-      <h1>{title}</h1>
+    <div className="flex flex-col">
+      <h1 className="text-4xl font-bold my-4">{title}</h1>
       <ProductPrice selectedVariant={selectedVariant} />
       <br />
       <Suspense
@@ -200,7 +220,7 @@ function ProductPrice({
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   return (
-    <div className="product-price">
+    <div className="text-xl">
       {selectedVariant?.compareAtPrice ? (
         <>
           <p>Sale</p>
@@ -262,20 +282,22 @@ function ProductForm({
 
 function ProductOptions({option}: {option: VariantOption}) {
   return (
-    <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
+    <div className="my-2" key={option.name}>
+      <h5 className="text-md font-bold uppercase">{option.name}</h5>
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
             <Link
-              className="product-options-item"
+              className={clsx('btn hover:btn-ghost', {
+                'btn btn-secondary': isActive,
+              })}
               key={option.name + value}
               prefetch="intent"
               preventScrollReset
               replace
               to={to}
               style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
+                // border: isActive ? '1px solid black' : '1px solid transparent',
                 opacity: isAvailable ? 1 : 0.3,
               }}
             >
@@ -312,6 +334,7 @@ function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
+            className="btn btn-accent"
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}

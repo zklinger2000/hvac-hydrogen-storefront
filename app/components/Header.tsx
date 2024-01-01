@@ -1,5 +1,6 @@
 import {Await, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
+import {FiMenu, FiSearch, FiShoppingCart, FiUser} from 'react-icons/fi';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
@@ -11,16 +12,24 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+    <header className="navbar bg-primary text-primary-content">
+      <div className="max-w-[900px] w-full mx-auto">
+        <div className="navbar-start">
+          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+            <strong>{shop.name}</strong>
+          </NavLink>
+        </div>
+        <div className="navbar-center">
+          <HeaderMenu
+            menu={menu}
+            viewport="desktop"
+            primaryDomainUrl={header.shop.primaryDomain.url}
+          />
+        </div>
+        <div className="navbar-end">
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+        </div>
+      </div>
     </header>
   );
 }
@@ -90,10 +99,16 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
+    <nav className="flex justify-end gap-4 w-full" role="navigation">
       <HeaderMenuMobileToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
+        <div className="text-2xl justify-center flex items-center w-8 h-8">
+          {isLoggedIn ? (
+            <FiUser className="w-5 h-5" />
+          ) : (
+            <FiUser className="w-5 h-5" />
+          )}
+        </div>
       </NavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
@@ -103,18 +118,40 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
+    <a className="md:hidden mx-4 text-secondary" href="#mobile-menu-aside">
+      <div className="text-2xl justify-center border border-base-300 flex items-center w-8 h-8 rounded-md">
+        <FiMenu />
+      </div>
     </a>
   );
 }
 
 function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
+  return (
+    <a href="#search-aside">
+      <div className="text-2xl justify-center flex items-center w-8 h-8">
+        <FiSearch className="h-5 w-5" />
+      </div>
+    </a>
+  );
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a className="mr-4" href="#cart-aside">
+      <div className="indicator">
+        {count ? (
+          <span className="indicator-item badge badge-accent outline">
+            {count}
+          </span>
+        ) : null}
+        <div className="text-2xl justify-center flex items-center w-8 h-8">
+          <FiShoppingCart className="w-5 h-5" />
+        </div>
+      </div>
+    </a>
+  );
+  <a href="#cart-aside">Cart {count}</a>;
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

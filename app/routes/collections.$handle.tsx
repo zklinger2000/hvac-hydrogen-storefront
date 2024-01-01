@@ -1,5 +1,10 @@
 import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Link, type MetaFunction} from '@remix-run/react';
+import {
+  useLoaderData,
+  Link,
+  type MetaFunction,
+  NavLink,
+} from '@remix-run/react';
 import {
   Pagination,
   getPaginationVariables,
@@ -8,6 +13,7 @@ import {
 } from '@shopify/hydrogen';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
+import {FiFolder, FiHome, FiList} from 'react-icons/fi';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -40,19 +46,50 @@ export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
+    <div className="content-grid">
+      {/* Breadcrumbs */}
+      <div className="text-sm breadcrumbs">
+        <ul>
+          <li>
+            <NavLink to="/">
+              <FiHome className="mr-2" />
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/collections">
+              <FiFolder className="mr-2" />
+              Collections
+            </NavLink>
+          </li>
+          <li>{collection.title}</li>
+        </ul>
+      </div>
+      <h1 className="text-4xl my-6 font-bold uppercase">{collection.title}</h1>
+      <div className="badge badge-neutral p-3 mb-4">
+        Number of products: {collection.products.nodes.length}
+      </div>
+      <p className="prose mb-16">{collection.description}</p>
       <Pagination connection={collection.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
             <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              {isLoading ? (
+                'Loading...'
+              ) : (
+                <button className="btn btn-success my-4">
+                  ↑ Load previous
+                </button>
+              )}
             </PreviousLink>
             <ProductsGrid products={nodes} />
             <br />
             <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              {isLoading ? (
+                'Loading...'
+              ) : (
+                <button className="btn btn-success my-4">Load more ↓</button>
+              )}
             </NextLink>
           </>
         )}
@@ -63,7 +100,7 @@ export default function Collection() {
 
 function ProductsGrid({products}: {products: ProductItemFragment[]}) {
   return (
-    <div className="products-grid">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
       {products.map((product, index) => {
         return (
           <ProductItem
@@ -87,25 +124,34 @@ function ProductItem({
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
   return (
-    <Link
-      className="product-item"
-      key={product.id}
-      prefetch="intent"
-      to={variantUrl}
-    >
-      {product.featuredImage && (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
+    <Link className="" key={product.id} prefetch="intent" to={variantUrl}>
+      <div className="card lg:card-side bg-base-100 shadow-xl">
+        <figure className="lg:max-w-32">
+          {product.featuredImage && (
+            <Image
+              alt={product.featuredImage.altText || product.title}
+              aspectRatio="1/1"
+              data={product.featuredImage}
+              loading={loading}
+              sizes="(min-width: 45em) 400px, 100vw"
+              className="drop-shadow-md"
+            />
+          )}
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{product.title}</h2>
+          <div className="grid w-full">
+            <p className="h-8 truncate ...">
+              {product.description && product.description.slice(0, 100)}
+            </p>
+          </div>
+          <div className="card-actions justify-end">
+            <div className="text-2xl font-bold">
+              <Money data={product.priceRange.minVariantPrice} />
+            </div>
+          </div>
+        </div>
+      </div>
     </Link>
   );
 }
@@ -119,6 +165,7 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    description
     featuredImage {
       id
       altText
