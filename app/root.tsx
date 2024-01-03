@@ -113,7 +113,7 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <html lang="en" data-theme="nord">
+    <html lang="en" data-theme="nord" style={{backgroundColor: '#4c566a'}}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

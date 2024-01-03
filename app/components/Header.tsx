@@ -12,7 +12,7 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="navbar bg-primary text-primary-content">
+    <header className="navbar bg-primary text-primary-content h-[--header-height] sticky top-0 z-10">
       <div className="max-w-[900px] w-full mx-auto">
         <div className="navbar-start">
           <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>

@@ -16,7 +16,9 @@ import {useVariantUrl} from '~/utils';
 import {FiFolder, FiHome, FiList} from 'react-icons/fi';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  return [
+    {title: `PG HVAC Parts | ${data?.collection.title ?? ''} Collection`},
+  ];
 };
 
 export async function loader({request, params, context}: LoaderFunctionArgs) {
@@ -46,30 +48,36 @@ export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
 
   return (
-    <div className="content-grid">
+    <div className="content-grid mb-8 bg-base-100">
       {/* Breadcrumbs */}
-      <div className="text-sm breadcrumbs">
-        <ul>
-          <li>
-            <NavLink to="/">
-              <FiHome className="mr-2" />
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/collections">
-              <FiFolder className="mr-2" />
-              Collections
-            </NavLink>
-          </li>
-          <li>{collection.title}</li>
-        </ul>
+      <div className="w-full fixed bg-base-100 drop-shadow-md">
+        <nav className="content-grid">
+          <div className="text-sm breadcrumbs">
+            <ul>
+              <li>
+                <NavLink to="/">
+                  <FiHome className="mr-2" />
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/collections">
+                  <FiFolder className="mr-2" />
+                  Collections
+                </NavLink>
+              </li>
+              <li>{collection.title}</li>
+            </ul>
+          </div>
+        </nav>
       </div>
-      <h1 className="text-4xl my-6 font-bold uppercase">{collection.title}</h1>
+      <h1 className="text-4xl mt-16 mb-6 font-bold uppercase">
+        {collection.title}
+      </h1>
       <div className="badge badge-neutral p-3 mb-4">
         Number of products: {collection.products.nodes.length}
       </div>
-      <p className="prose mb-16">{collection.description}</p>
+      <p className="prose mb-8">{collection.description}</p>
       <Pagination connection={collection.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
@@ -94,6 +102,7 @@ export default function Collection() {
           </>
         )}
       </Pagination>
+      <div className="h-8" />
     </div>
   );
 }

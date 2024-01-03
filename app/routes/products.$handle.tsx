@@ -31,7 +31,7 @@ import {FiFolder, FiHome} from 'react-icons/fi';
 import clsx from 'clsx';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
+  return [{title: `PG HVAC Parts | ${data?.product.title ?? ''}`}];
 };
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -119,30 +119,53 @@ function redirectToFirstVariant({
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
+  const collections = product.collections.nodes.map((node) => node.title);
+  const tags = product.tags;
+  console.log('collections', collections);
+  console.log('tags', tags);
+  // find the first collection that matches any of the product tags
+  const collection = collections.find((collection) =>
+    tags.includes(collection.toLowerCase()),
+  );
+  const kebabCaseCollection = collection?.toLowerCase().replace(' ', '-');
+  console.log('collection', collection);
+
   return (
-    <div className="content-grid">
+    <div className="content-grid bg-base-100">
       {/* Breadcrumbs */}
-      <div className="text-sm breadcrumbs">
-        <ul>
-          <li>
-            <NavLink to="/">
-              <FiHome className="mr-2" />
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <FiFolder className="mr-2" />
-            Products
-          </li>
-        </ul>
+      <div className="w-full fixed bg-base-100 drop-shadow-md">
+        <nav className="content-grid">
+          <div className="text-sm breadcrumbs">
+            <ul>
+              <li>
+                <NavLink to="/">
+                  <FiHome className="mr-2" />
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/collections">
+                  <FiFolder className="mr-2" />
+                  Collections
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={`/collections/${kebabCaseCollection}`}>
+                  {collection}
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-      <div className="product">
+      <div className="grid grid-cols-2 gap-8 mt-16">
         <ProductImage image={selectedVariant?.image} />
         <ProductMain
           selectedVariant={selectedVariant}
           product={product}
           variants={variants}
         />
+        <div className="h-8" />
       </div>
     </div>
   );
@@ -398,6 +421,14 @@ const PRODUCT_FRAGMENT = `#graphql
     }
     selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
       ...ProductVariant
+    }
+    tags
+    collections(first: 25) {
+      nodes {
+        id
+        title
+        handle
+      }
     }
     variants(first: 1) {
       nodes {

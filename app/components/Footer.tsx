@@ -1,4 +1,4 @@
-import {NavLink} from '@remix-run/react';
+import {NavLink, useLocation} from '@remix-run/react';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 
@@ -6,11 +6,33 @@ export function Footer({
   menu,
   shop,
 }: FooterQuery & {shop: HeaderQuery['shop']}) {
+  const currentYear = new Date().getFullYear();
+  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
+  const copyrightName = 'Prairie Group, LLC';
+
   return (
-    <footer className="footer">
+    <footer className="bg-neutral text-base-300">
       {menu && shop?.primaryDomain?.url && (
         <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
       )}
+      <div className="border-t border-white py-6 text-sm">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 min-[1320px]:px-0">
+          <p>
+            &copy; {copyrightDate} {copyrightName}
+            {copyrightName.length && !copyrightName.endsWith('.')
+              ? '.'
+              : ''}{' '}
+            All rights reserved.
+          </p>
+          <p>Built in Nebraska</p>
+          <p>
+            <a href="https://prairiegroup.us/tech">
+              Powered by Prairie Group Tech
+            </a>
+          </p>
+          <p className="w-full text-right text-xs text-slate-500">0.1.6</p>
+        </div>
+      </div>
     </footer>
   );
 }
@@ -24,34 +46,83 @@ function FooterMenu({
 }) {
   const {publicStoreDomain} = useRootLoaderData();
 
+  const nonShopifyMenuItems = [
+    {
+      title: 'Circuit Breakers',
+      url: '/collections/circuit-breakers',
+    },
+    {
+      title: 'Motors',
+      url: '/collections/motors',
+    },
+    {
+      title: 'Actuators',
+      url: '/collections/actuators',
+    },
+    {
+      title: 'Control Boards',
+      url: '/collections/control-boards',
+    },
+    {
+      title: 'About Us',
+      url: '/about',
+    },
+    {
+      title: 'Contact',
+      url: '/pages/contact',
+    },
+  ];
+
+  const location = useLocation();
+
   return (
-    <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
-          </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+    <nav className="content-grid" role="navigation">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 sm:text-center gap-4 my-8">
+        {nonShopifyMenuItems
+          ? nonShopifyMenuItems.map((link) => (
+              <NavLink
+                className="font-squada text-2xl px-4 border-b sm:border-0 uppercase hover:underline hover:text-base-100"
+                key={link.url}
+                end
+                prefetch="intent"
+                to={link.url}
+              >
+                {link.title}
+              </NavLink>
+            ))
+          : null}
+        {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
+          if (!item.url) return null;
+          // if the url is internal, we strip the domain
+          const url =
+            item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
+              ? new URL(item.url).pathname
+              : item.url;
+          const isExternal = !url.startsWith('/');
+          return isExternal ? (
+            <a
+              href={url}
+              key={item.id}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {item.title}
+            </a>
+          ) : (
+            <NavLink
+              end
+              key={item.id}
+              prefetch="intent"
+              to={url}
+              className="font-squada text-2xl px-4 border-b sm:border-0 uppercase hover:underline hover:text-base-100"
+            >
+              {item.title}
+            </NavLink>
+          );
+        })}
+      </div>
     </nav>
   );
 }

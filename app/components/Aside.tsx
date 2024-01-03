@@ -27,7 +27,7 @@ export function Aside({
         }}
       />
       <aside>
-        <header className="bg-secondary">
+        <header className="bg-secondary z-50">
           <h3 className="text-xl font-bold">{heading}</h3>
           <CloseAside />
         </header>
