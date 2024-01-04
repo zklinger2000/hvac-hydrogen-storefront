@@ -1,6 +1,7 @@
 import {Await, NavLink} from '@remix-run/react';
 import {Suspense} from 'react';
 import {FiMenu, FiSearch, FiShoppingCart, FiUser} from 'react-icons/fi';
+import Logo from './Logo';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
@@ -16,7 +17,10 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
       <div className="max-w-[900px] w-full mx-auto">
         <div className="navbar-start">
           <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-            <strong>{shop.name}</strong>
+            <div className="flex items-center gap-2">
+              <Logo size="sm" outline={true} />
+              <strong>HVAC Parts</strong>
+            </div>
           </NavLink>
         </div>
         <div className="navbar-center">

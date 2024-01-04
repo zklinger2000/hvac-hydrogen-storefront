@@ -1,4 +1,5 @@
 import {NavLink, useLocation} from '@remix-run/react';
+import {FiSearch} from 'react-icons/fi';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 
@@ -122,6 +123,14 @@ function FooterMenu({
             </NavLink>
           );
         })}
+        <a href="#search-aside">
+          <div className="flex items-center justify-center">
+            <div className="font-squada text-2xl px-4 uppercase hover:underline hover:text-base-100">
+              Search
+            </div>
+            <FiSearch className="h-5 w-5" />
+          </div>
+        </a>
       </div>
     </nav>
   );

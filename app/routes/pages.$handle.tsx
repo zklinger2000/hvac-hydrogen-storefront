@@ -27,9 +27,9 @@ export default function Page() {
   const {page} = useLoaderData<typeof loader>();
 
   return (
-    <div className="page">
+    <div className="content-grid bg-base-300 flex flex-col items-center">
       <header>
-        <h1>{page.title}</h1>
+        <h1 className="text-2xl font-bold uppercase my-6">{page.title}</h1>
       </header>
       <main dangerouslySetInnerHTML={{__html: page.body}} />
     </div>
