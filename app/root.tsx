@@ -18,7 +18,7 @@ import {
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/favicon.ico';
 import {Layout} from '~/components/Layout';
 import tailwindStyles from '~/styles/tailwind.css';
 import {cssBundleHref} from '@remix-run/css-bundle';
@@ -57,7 +57,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/x-icon', href: favicon},
   ];
 }
 

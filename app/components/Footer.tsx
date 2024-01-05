@@ -31,7 +31,7 @@ export function Footer({
               Powered by Prairie Group Tech
             </a>
           </p>
-          <p className="w-full text-right text-xs text-slate-500">0.1.6</p>
+          <p className="w-full text-right text-xs text-slate-500">0.1.7</p>
         </div>
       </div>
     </footer>

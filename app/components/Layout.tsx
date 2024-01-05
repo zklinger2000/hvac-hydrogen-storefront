@@ -66,17 +66,19 @@ function SearchAside() {
         <br />
         <PredictiveSearchForm>
           {({fetchResults, inputRef}) => (
-            <div>
+            <div className="flex gap-4 items-center mb-8">
               <input
+                className="input input-bordered w-full"
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}
-                placeholder="Search"
+                placeholder="SKU#, Brand name, product..."
                 ref={inputRef}
                 type="search"
               />
-              &nbsp;
-              <button type="submit">Search</button>
+              <button className="btn btn-primary" type="submit">
+                Search
+              </button>
             </div>
           )}
         </PredictiveSearchForm>

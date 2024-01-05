@@ -250,6 +250,7 @@ export function CartEmpty({
       </p>
       <br />
       <Link
+        className="btn btn-primary rounded-xl"
         to="/collections"
         onClick={() => {
           if (layout === 'aside') {
