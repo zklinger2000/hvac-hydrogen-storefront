@@ -118,6 +118,7 @@ function CollectionItem({
               aspectRatio="1/1"
               data={collection.image}
               loading={index < 3 ? 'eager' : undefined}
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               className="drop-shadow-md"
             />
           )}
