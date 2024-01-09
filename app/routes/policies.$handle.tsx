@@ -45,14 +45,14 @@ export default function Policy() {
   const {policy} = useLoaderData<typeof loader>();
 
   return (
-    <div className="policy">
-      <br />
-      <br />
-      <div>
-        <Link to="/policies">← Back to Policies</Link>
-      </div>
-      <br />
-      <h1>{policy.title}</h1>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <Link
+        className="text-md text-primary my-8 hover:underline"
+        to="/policies"
+      >
+        ← Back to Policies
+      </Link>
+      <h1 className="text-xl font-bold">{policy.title}</h1>
       <div dangerouslySetInnerHTML={{__html: policy.body}} />
     </div>
   );

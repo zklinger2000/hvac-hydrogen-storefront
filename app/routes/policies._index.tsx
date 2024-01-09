@@ -16,13 +16,13 @@ export default function Policies() {
   const {policies} = useLoaderData<typeof loader>();
 
   return (
-    <div className="policies">
-      <h1>Policies</h1>
-      <div>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">Policies</h1>
+      <div className="text-primary">
         {policies.map((policy) => {
           if (!policy) return null;
           return (
-            <fieldset key={policy.id}>
+            <fieldset className="hover:underline mb-4" key={policy.id}>
               <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
             </fieldset>
           );

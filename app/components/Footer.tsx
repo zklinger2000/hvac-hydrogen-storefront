@@ -17,6 +17,7 @@ export function Footer({
         <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
       )}
       <div className="border-t border-white py-6 text-sm">
+        <Policies />
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 min-[1320px]:px-0">
           <p>
             &copy; {copyrightDate} {copyrightName}
@@ -73,8 +74,6 @@ function FooterMenu({
       url: '/pages/contact',
     },
   ];
-
-  const location = useLocation();
 
   return (
     <nav className="content-grid" role="navigation">
@@ -136,6 +135,27 @@ function FooterMenu({
   );
 }
 
+function Policies() {
+  return (
+    <div className="content-grid">
+      <div className="flex justify-center gap-8 mb-6">
+        <NavLink className="hover:underline" to="/policies/privacy-policy">
+          Privacy Policy
+        </NavLink>
+        <NavLink className="hover:underline" to="/policies/refund-policy">
+          Refund Policy
+        </NavLink>
+        <NavLink className="hover:underline" to="/policies/shipping-policy">
+          Shipping Policy
+        </NavLink>
+        <NavLink className="hover:underline" to="/policies/terms-of-service">
+          Terms of Service
+        </NavLink>
+      </div>
+    </div>
+  );
+}
+
 const FALLBACK_FOOTER_MENU = {
   id: 'gid://shopify/Menu/199655620664',
   items: [
@@ -177,16 +197,3 @@ const FALLBACK_FOOTER_MENU = {
     },
   ],
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
-}
