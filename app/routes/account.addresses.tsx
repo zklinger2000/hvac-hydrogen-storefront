@@ -13,6 +13,9 @@ import {
   useOutletContext,
   type MetaFunction,
 } from '@remix-run/react';
+import Button from '~/components/Button';
+import TextInput from '~/components/TextInput';
+import Checkbox from '~/components/Checkbox';
 
 export type ActionResponse = {
   addressId?: string | null;
@@ -219,19 +222,13 @@ export default function Addresses() {
   const {defaultAddress, addresses} = customer;
 
   return (
-    <div className="account-addresses">
-      <h2>Addresses</h2>
+    <div>
+      <h2 className="text-lg my-4 font-bold">Addresses</h2>
       <br />
       {!addresses.nodes.length ? (
-        <p>You have no addresses saved.</p>
+        <p className="prose">You have no addresses saved.</p>
       ) : (
         <div>
-          <div>
-            <legend>Create address</legend>
-            <NewAddressForm />
-          </div>
-          <br />
-          <hr />
           <br />
           <ExistingAddresses
             addresses={addresses}
@@ -239,6 +236,12 @@ export default function Addresses() {
           />
         </div>
       )}
+      <div>
+        <br />
+        <hr className="hr" />
+        <legend className="text-md font-semibold my-4">Create address</legend>
+        <NewAddressForm />
+      </div>
     </div>
   );
 }
@@ -262,13 +265,14 @@ function NewAddressForm() {
     <AddressForm address={newAddress} defaultAddress={null}>
       {({stateForMethod}) => (
         <div>
-          <button
+          <Button
+            className="btn-primary"
             disabled={stateForMethod('POST') !== 'idle'}
             formMethod="POST"
             type="submit"
           >
             {stateForMethod('POST') !== 'idle' ? 'Creating' : 'Create'}
-          </button>
+          </Button>
         </div>
       )}
     </AddressForm>
@@ -281,7 +285,7 @@ function ExistingAddresses({
 }: Pick<CustomerFragment, 'addresses' | 'defaultAddress'>) {
   return (
     <div>
-      <legend>Existing addresses</legend>
+      <legend className="text-md font-semibold">Existing addresses</legend>
       {addresses.nodes.map((address) => (
         <AddressForm
           key={address.id}
@@ -290,20 +294,22 @@ function ExistingAddresses({
         >
           {({stateForMethod}) => (
             <div>
-              <button
+              <Button
                 disabled={stateForMethod('PUT') !== 'idle'}
                 formMethod="PUT"
                 type="submit"
+                className="btn-primary"
               >
                 {stateForMethod('PUT') !== 'idle' ? 'Saving' : 'Save'}
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={stateForMethod('DELETE') !== 'idle'}
                 formMethod="DELETE"
                 type="submit"
+                className="btn-error"
               >
                 {stateForMethod('DELETE') !== 'idle' ? 'Deleting' : 'Delete'}
-              </button>
+              </Button>
             </div>
           )}
         </AddressForm>
@@ -333,9 +339,8 @@ export function AddressForm({
     <Form id={address.id}>
       <fieldset>
         <input type="hidden" name="addressId" defaultValue={address.id} />
-        <label htmlFor="firstName">First name*</label>
-        <input
-          aria-label="First name"
+        <TextInput
+          ariaLabel="First name"
           autoComplete="given-name"
           defaultValue={address?.firstName ?? ''}
           id="firstName"
@@ -343,10 +348,10 @@ export function AddressForm({
           placeholder="First name"
           required
           type="text"
+          label="First name*"
         />
-        <label htmlFor="lastName">Last name*</label>
-        <input
-          aria-label="Last name"
+        <TextInput
+          ariaLabel="Last name"
           autoComplete="family-name"
           defaultValue={address?.lastName ?? ''}
           id="lastName"
@@ -354,41 +359,41 @@ export function AddressForm({
           placeholder="Last name"
           required
           type="text"
+          label="Last name*"
         />
-        <label htmlFor="company">Company</label>
-        <input
-          aria-label="Company"
+        <TextInput
+          ariaLabel="Company"
           autoComplete="organization"
           defaultValue={address?.company ?? ''}
           id="company"
           name="company"
           placeholder="Company"
           type="text"
+          label="Company"
         />
-        <label htmlFor="address1">Address line*</label>
-        <input
-          aria-label="Address line 1"
+        <TextInput
+          ariaLabel="Address line 1"
           autoComplete="address-line1"
           defaultValue={address?.address1 ?? ''}
           id="address1"
           name="address1"
-          placeholder="Address line 1*"
+          placeholder="Address line 1"
           required
           type="text"
+          label="Address line*"
         />
-        <label htmlFor="address2">Address line 2</label>
-        <input
-          aria-label="Address line 2"
+        <TextInput
+          ariaLabel="Address line 2"
           autoComplete="address-line2"
           defaultValue={address?.address2 ?? ''}
           id="address2"
           name="address2"
           placeholder="Address line 2"
           type="text"
+          label="Address line 2"
         />
-        <label htmlFor="city">City*</label>
-        <input
-          aria-label="City"
+        <TextInput
+          ariaLabel="City"
           autoComplete="address-level2"
           defaultValue={address?.city ?? ''}
           id="city"
@@ -396,10 +401,10 @@ export function AddressForm({
           placeholder="City"
           required
           type="text"
+          label="City*"
         />
-        <label htmlFor="province">State / Province*</label>
-        <input
-          aria-label="State"
+        <TextInput
+          ariaLabel="State"
           autoComplete="address-level1"
           defaultValue={address?.province ?? ''}
           id="province"
@@ -407,10 +412,10 @@ export function AddressForm({
           placeholder="State / Province"
           required
           type="text"
+          label="State / Province*"
         />
-        <label htmlFor="zip">Zip / Postal Code*</label>
-        <input
-          aria-label="Zip"
+        <TextInput
+          ariaLabel="Zip"
           autoComplete="postal-code"
           defaultValue={address?.zip ?? ''}
           id="zip"
@@ -418,10 +423,10 @@ export function AddressForm({
           placeholder="Zip / Postal Code"
           required
           type="text"
+          label="Zip / Postal Code*"
         />
-        <label htmlFor="country">Country*</label>
-        <input
-          aria-label="Country"
+        <TextInput
+          ariaLabel="Country"
           autoComplete="country-name"
           defaultValue={address?.country ?? ''}
           id="country"
@@ -429,27 +434,26 @@ export function AddressForm({
           placeholder="Country"
           required
           type="text"
+          label="Country*"
         />
-        <label htmlFor="phone">Phone</label>
-        <input
-          aria-label="Phone"
+        <TextInput
+          ariaLabel="Phone"
           autoComplete="tel"
           defaultValue={address?.phone ?? ''}
           id="phone"
           name="phone"
-          placeholder="+16135551111"
+          placeholder="(###) ###-####"
           pattern="^\+?[1-9]\d{3,14}$"
           type="tel"
+          label="Phone*"
         />
-        <div>
-          <input
-            defaultChecked={isDefaultAddress}
-            id="defaultAddress"
-            name="defaultAddress"
-            type="checkbox"
-          />
-          <label htmlFor="defaultAddress">Set as default address</label>
-        </div>
+        <Checkbox
+          ariaLabel="Set as default address"
+          defaultChecked={isDefaultAddress}
+          id="defaultAddress"
+          name="defaultAddress"
+          label="Set as default address"
+        />
         {error ? (
           <p>
             <mark>

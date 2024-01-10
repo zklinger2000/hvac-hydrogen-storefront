@@ -106,8 +106,8 @@ function AccountLayout({
     : 'Account Details';
 
   return (
-    <div className="account">
-      <h1>{heading}</h1>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">{heading}</h1>
       <br />
       <AccountMenu />
       {children}

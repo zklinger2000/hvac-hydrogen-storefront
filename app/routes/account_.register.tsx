@@ -6,6 +6,8 @@ import {
 } from '@shopify/remix-oxygen';
 import {Form, Link, useActionData} from '@remix-run/react';
 import type {CustomerCreateMutation} from 'storefrontapi.generated';
+import TextInput from '~/components/TextInput';
+import Button from '~/components/Button';
 
 type ActionResponse = {
   error: string | null;
@@ -107,43 +109,39 @@ export default function Register() {
   const data = useActionData<ActionResponse>();
   const error = data?.error || null;
   return (
-    <div className="login">
-      <h1>Register.</h1>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">Register</h1>
       <Form method="POST">
         <fieldset>
-          <label htmlFor="email">Email address</label>
-          <input
+          <TextInput
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             required
-            placeholder="Email address"
-            aria-label="Email address"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
+            ariaLabel="Email address"
+            label="Email address"
             autoFocus
           />
-          <label htmlFor="password">Password</label>
-          <input
+          <TextInput
             id="password"
             name="password"
             type="password"
             autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
             minLength={8}
             required
+            ariaLabel="Password"
+            label="Password"
           />
-          <label htmlFor="passwordConfirm">Re-enter password</label>
-          <input
+          <TextInput
             id="passwordConfirm"
             name="passwordConfirm"
             type="password"
             autoComplete="current-password"
-            placeholder="Re-enter password"
-            aria-label="Re-enter password"
             minLength={8}
             required
+            ariaLabel="Re-enter password"
+            label="Re-enter password"
           />
         </fieldset>
         {error ? (
@@ -155,11 +153,18 @@ export default function Register() {
         ) : (
           <br />
         )}
-        <button type="submit">Register</button>
+        <Button className="btn-primary" type="submit">
+          Register
+        </Button>
       </Form>
       <br />
-      <p>
-        <Link to="/account/login">Login →</Link>
+      <p className="my-8">
+        <Link
+          className="text-md text-primary hover:underline"
+          to="/account/login"
+        >
+          Login →
+        </Link>
       </p>
     </div>
   );

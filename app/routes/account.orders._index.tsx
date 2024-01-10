@@ -50,8 +50,8 @@ export default function Orders() {
   const {customer} = useLoaderData<{customer: CustomerOrdersFragment}>();
   const {orders, numberOfOrders} = customer;
   return (
-    <div className="orders">
-      <h2>
+    <div>
+      <h2 className="text-lg my-4 font-bold">
         Orders <small>({numberOfOrders})</small>
       </h2>
       <br />
@@ -91,10 +91,15 @@ function OrdersTable({orders}: Pick<CustomerOrdersFragment, 'orders'>) {
 function EmptyOrders() {
   return (
     <div>
-      <p>You haven&apos;t placed any orders yet.</p>
+      <p className="prose">You haven&apos;t placed any orders yet.</p>
       <br />
-      <p>
-        <Link to="/collections">Start Shopping →</Link>
+      <p className="my-8">
+        <Link
+          className="text-md text-primary hover:underline"
+          to="/collections"
+        >
+          Start Shopping →
+        </Link>
       </p>
     </div>
   );

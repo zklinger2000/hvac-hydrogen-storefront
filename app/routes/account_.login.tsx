@@ -5,6 +5,8 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {Form, Link, useActionData, type MetaFunction} from '@remix-run/react';
+import Button from '~/components/Button';
+import TextInput from '~/components/TextInput';
 
 type ActionResponse = {
   error: string | null;
@@ -72,30 +74,27 @@ export default function Login() {
   const error = data?.error || null;
 
   return (
-    <div className="login">
-      <h1>Sign in.</h1>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">Sign in</h1>
       <Form method="POST">
         <fieldset>
-          <label htmlFor="email">Email address</label>
-          <input
+          <TextInput
             id="email"
             name="email"
             type="email"
             autoComplete="email"
-            required
-            placeholder="Email address"
-            aria-label="Email address"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
+            label="Email address"
+            ariaLabel="Email address"
             autoFocus
+            required
           />
-          <label htmlFor="password">Password</label>
-          <input
+          <TextInput
             id="password"
             name="password"
             type="password"
             autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
+            label="Password"
+            ariaLabel="Password"
             minLength={8}
             required
           />
@@ -109,15 +108,27 @@ export default function Login() {
         ) : (
           <br />
         )}
-        <button type="submit">Sign in</button>
+        <Button className="btn-primary" type="submit">
+          Sign in
+        </Button>
       </Form>
       <br />
-      <div>
+      <div className="grid gap-4 my-8">
         <p>
-          <Link to="/account/recover">Forgot password →</Link>
+          <Link
+            className="text-md text-primary hover:underline"
+            to="/account/recover"
+          >
+            Forgot password →
+          </Link>
         </p>
         <p>
-          <Link to="/account/register">Register →</Link>
+          <Link
+            className="text-md text-primary my-8 hover:underline"
+            to="/account/register"
+          >
+            Register →
+          </Link>
         </p>
       </div>
     </div>

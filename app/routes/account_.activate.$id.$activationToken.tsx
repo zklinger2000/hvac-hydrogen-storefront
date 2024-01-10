@@ -5,6 +5,7 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {Form, useActionData, type MetaFunction} from '@remix-run/react';
+import Button from '~/components/Button';
 
 type ActionResponse = {
   error: string | null;
@@ -88,35 +89,42 @@ export default function Activate() {
   const error = action?.error ?? null;
 
   return (
-    <div className="account-activate">
-      <h1>Activate Account.</h1>
-      <p>Create your password to activate your account.</p>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">Activate Account</h1>
+      <p className="prose">Create your password to activate your account.</p>
       <Form method="POST">
         <fieldset>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
-            minLength={8}
-            required
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-          />
-          <label htmlFor="passwordConfirm">Re-enter password</label>
-          <input
-            id="passwordConfirm"
-            name="passwordConfirm"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Re-enter password"
-            aria-label="Re-enter password"
-            minLength={8}
-            required
-          />
+          <label className="form-control w-full max-w-xs" htmlFor="password">
+            <div className="label">
+              <span className="label-text">Password</span>
+            </div>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              aria-label="Password"
+              autoComplete="current-password"
+              minLength={8}
+              required
+            />
+          </label>
+          <label
+            className="form-control w-full max-w-xs"
+            htmlFor="passwordConfirm"
+          >
+            <div className="label">
+              <span className="label-text">Re-enter password</span>
+            </div>
+            <input
+              id="passwordConfirm"
+              name="passwordConfirm"
+              type="password"
+              aria-label="Re-enter password"
+              autoComplete="current-password"
+              minLength={8}
+              required
+            />
+          </label>
         </fieldset>
         {error ? (
           <p>
@@ -127,12 +135,9 @@ export default function Activate() {
         ) : (
           <br />
         )}
-        <button
-          className="bg-primary text-contrast rounded py-2 px-4 focus:shadow-outline block w-full"
-          type="submit"
-        >
+        <Button className="btn-primary" type="submit">
           Save
-        </button>
+        </Button>
       </Form>
     </div>
   );

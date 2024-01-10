@@ -13,6 +13,9 @@ import {
   useOutletContext,
   type MetaFunction,
 } from '@remix-run/react';
+import Checkbox from '~/components/Checkbox';
+import TextInput from '~/components/TextInput';
+import Button from '~/components/Button';
 
 export type ActionResponse = {
   error: string | null;
@@ -114,103 +117,109 @@ export default function AccountProfile() {
   const customer = action?.customer ?? account?.customer;
 
   return (
-    <div className="account-profile">
-      <h2>My profile</h2>
+    <div>
+      <h2 className="text-lg my-4 font-bold">My profile</h2>
       <br />
       <Form method="PUT">
-        <legend>Personal information</legend>
+        <legend className="text-md font-semibold mb-4">
+          Personal information
+        </legend>
         <fieldset>
-          <label htmlFor="firstName">First name</label>
-          <input
+          <TextInput
             id="firstName"
             name="firstName"
             type="text"
             autoComplete="given-name"
             placeholder="First name"
-            aria-label="First name"
+            ariaLabel="First name"
+            label="First name"
             defaultValue={customer.firstName ?? ''}
             minLength={2}
           />
-          <label htmlFor="lastName">Last name</label>
-          <input
+          <TextInput
             id="lastName"
             name="lastName"
             type="text"
             autoComplete="family-name"
             placeholder="Last name"
-            aria-label="Last name"
+            ariaLabel="Last name"
+            label="Last name"
             defaultValue={customer.lastName ?? ''}
             minLength={2}
           />
-          <label htmlFor="phone">Mobile</label>
-          <input
+          <TextInput
             id="phone"
             name="phone"
             type="tel"
             autoComplete="tel"
-            placeholder="Mobile"
-            aria-label="Mobile"
+            placeholder="(###) ###-####"
+            ariaLabel="Mobile"
+            label="Mobile"
             defaultValue={customer.phone ?? ''}
           />
-          <label htmlFor="email">Email address</label>
-          <input
+          <TextInput
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             required
             placeholder="Email address"
-            aria-label="Email address"
+            ariaLabel="Email address"
+            label="Email address"
             defaultValue={customer.email ?? ''}
           />
-          <div className="account-profile-marketing">
-            <input
-              id="acceptsMarketing"
-              name="acceptsMarketing"
-              type="checkbox"
-              placeholder="Accept marketing"
-              aria-label="Accept marketing"
-              defaultChecked={customer.acceptsMarketing}
-            />
-            <label htmlFor="acceptsMarketing">
-              &nbsp; Subscribed to marketing communications
-            </label>
-          </div>
+          <Checkbox
+            label="Subscribed to marketing communications"
+            id="acceptsMarketing"
+            name="acceptsMarketing"
+            placeholder="Accept marketing"
+            ariaLabel="Accept marketing"
+            defaultChecked={customer.acceptsMarketing}
+          />
         </fieldset>
         <br />
-        <legend>Change password (optional)</legend>
+        <legend className="text-md font-semibold my-4">
+          Change password (optional)
+        </legend>
         <fieldset>
-          <label htmlFor="currentPassword">Current password</label>
-          <input
+          <TextInput
             id="currentPassword"
             name="currentPassword"
             type="password"
             autoComplete="current-password"
             placeholder="Current password"
-            aria-label="Current password"
+            ariaLabel="Current password"
+            label="Current password"
             minLength={8}
           />
-
-          <label htmlFor="newPassword">New password</label>
-          <input
+          <TextInput
             id="newPassword"
             name="newPassword"
             type="password"
             placeholder="New password"
-            aria-label="New password"
+            ariaLabel="New password"
+            label="New password"
             minLength={8}
           />
-
-          <label htmlFor="newPasswordConfirm">New password (confirm)</label>
-          <input
-            id="newPasswordConfirm"
-            name="newPasswordConfirm"
-            type="password"
-            placeholder="New password (confirm)"
-            aria-label="New password confirm"
-            minLength={8}
-          />
-          <small>Passwords must be at least 8 characters.</small>
+          <label
+            className="form-control w-full max-w-xs"
+            htmlFor="newPasswordConfirm"
+          >
+            <div className="label">
+              <span className="label-text">New password (confirm)</span>
+            </div>
+            <input
+              id="newPasswordConfirm"
+              name="newPasswordConfirm"
+              type="password"
+              placeholder="New password (confirm)"
+              aria-label="New password confirm"
+              minLength={8}
+            />
+            <small className="m-1">
+              Passwords must be at least 8 characters.
+            </small>
+          </label>
         </fieldset>
         {action?.error ? (
           <p>
@@ -221,9 +230,13 @@ export default function AccountProfile() {
         ) : (
           <br />
         )}
-        <button type="submit" disabled={state !== 'idle'}>
+        <Button
+          className="btn-primary"
+          type="submit"
+          disabled={state !== 'idle'}
+        >
           {state !== 'idle' ? 'Updating' : 'Update'}
-        </button>
+        </Button>
       </Form>
     </div>
   );

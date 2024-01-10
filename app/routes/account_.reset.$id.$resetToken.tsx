@@ -1,5 +1,7 @@
 import {type ActionFunctionArgs, json, redirect} from '@shopify/remix-oxygen';
-import {Form, useActionData, type MetaFunction} from '@remix-run/react';
+import {Form, useActionData, type MetaFunction, Link} from '@remix-run/react';
+import TextInput from '~/components/TextInput';
+import Button from '~/components/Button';
 
 type ActionResponse = {
   error: string | null;
@@ -64,34 +66,30 @@ export default function Reset() {
   const action = useActionData<ActionResponse>();
 
   return (
-    <div className="account-reset">
-      <h1>Reset Password.</h1>
-      <p>Enter a new password for your account.</p>
+    <div className="content-grid mb-8 pb-16 bg-base-100">
+      <h1 className="text-xl mt-8 mb-4 font-bold">Reset Password</h1>
+      <p className="prose">Enter a new password for your account.</p>
       <Form method="POST">
         <fieldset>
-          <label htmlFor="password">Password</label>
-          <input
-            aria-label="Password"
-            autoComplete="current-password"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
+          <TextInput
             id="password"
-            minLength={8}
             name="password"
-            placeholder="Password"
-            required
             type="password"
-          />
-          <label htmlFor="passwordConfirm">Re-enter password</label>
-          <input
-            aria-label="Re-enter password"
             autoComplete="current-password"
-            id="passwordConfirm"
             minLength={8}
-            name="passwordConfirm"
-            placeholder="Re-enter password"
             required
+            ariaLabel="Password"
+            label="Password"
+          />
+          <TextInput
+            id="passwordConfirm"
+            name="passwordConfirm"
             type="password"
+            autoComplete="current-password"
+            minLength={8}
+            required
+            ariaLabel="Re-enter password"
+            label="Re-enter password"
           />
         </fieldset>
         {action?.error ? (
@@ -103,11 +101,18 @@ export default function Reset() {
         ) : (
           <br />
         )}
-        <button type="submit">Reset</button>
+        <Button className="btn-primary" type="submit">
+          Reset
+        </Button>
       </Form>
       <br />
-      <p>
-        <a href="/account/login">Back to login →</a>
+      <p className="my-8">
+        <Link
+          className="text-md text-primary hover:underline"
+          to="/account/login"
+        >
+          Back to login →
+        </Link>
       </p>
     </div>
   );
