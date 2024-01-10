@@ -5,6 +5,7 @@ import Logo from './Logo';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
+import clsx from 'clsx';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -13,7 +14,7 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="navbar bg-primary text-primary-content h-[--header-height] sticky top-0 z-10">
+    <header className="navbar bg-primary text-base-300 h-[--header-height] sticky top-0 z-10">
       <div className="max-w-[900px] w-full mx-auto">
         <div className="navbar-start">
           <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
@@ -58,7 +59,7 @@ export function HeaderMenu({
   }
 
   return (
-    <nav className={className} role="navigation">
+    <nav className={clsx(className, 'text-base-300')} role="navigation">
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -71,12 +72,12 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="cursor-pointer hover:text-base-100"
             end
             key={item.id}
             onClick={closeAside}
             prefetch="intent"
-            style={activeLinkStyle}
+            // style={activeLinkStyle}
             to={url}
           >
             {item.title}
@@ -94,8 +95,8 @@ function HeaderCtas({
   return (
     <nav className="flex justify-end gap-4 w-full" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <div className="text-2xl justify-center flex items-center w-8 h-8">
+      <NavLink prefetch="intent" to="/account">
+        <div className="text-2xl text-base-300 hover:text-base-100 justify-center flex items-center w-8 h-8">
           {isLoggedIn ? (
             <FiUser className="w-5 h-5" />
           ) : (
@@ -122,7 +123,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   return (
     <a href="#search-aside">
-      <div className="text-2xl justify-center flex items-center w-8 h-8">
+      <div className="text-2xl justify-center flex items-center w-8 h-8 hover:text-base-100">
         <FiSearch className="h-5 w-5" />
       </div>
     </a>
@@ -138,7 +139,7 @@ function CartBadge({count}: {count: number}) {
             {count}
           </span>
         ) : null}
-        <div className="text-2xl justify-center flex items-center w-8 h-8">
+        <div className="text-2xl justify-center flex items-center w-8 h-8 hover:text-base-100">
           <FiShoppingCart className="w-5 h-5" />
         </div>
       </div>
